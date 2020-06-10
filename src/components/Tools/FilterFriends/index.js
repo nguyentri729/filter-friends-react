@@ -1,55 +1,30 @@
-import React from "react";
-import { Card, Table } from "antd";
-import { FilterOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button } from "antd";
-
+import React, { useState, useEffect } from "react";
+import { Card } from "antd";
+import { FilterOutlined, LoadingOutlined } from "@ant-design/icons";
+import filterData from '../../../data.json';
+import FilterTable from "./FilterTable"
 function FilterFriends() {
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-  ];
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([])
+  useEffect(() => {
+    setTimeout(() => {
+      setData(filterData)
+      setLoading(false)
+    }, 2000)
+  }, [])
+  
+  
   return (
     <div>
       <Card
         title={
           <h1>
-            <FilterOutlined /> Filter Friends
+            {isLoading ? <LoadingOutlined /> : <FilterOutlined />} Filter Friends 
           </h1>
         }
+        loading = {isLoading}
       >
-        <Button type="primary" icon={<SearchOutlined />} style={{textAlign: 'right'}}>
-          Search
-        </Button>
-        <br />
-        <Table dataSource={dataSource} columns={columns} />;
+       <FilterTable data = {data}/>
       </Card>
     </div>
   );

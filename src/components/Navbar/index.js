@@ -20,7 +20,7 @@ function Navbar() {
 
         <SubMenu key="sub1" icon={<ToolOutlined />} title="Tools">
           <Menu.Item key="3">
-            <Link to="/tools/filterFriends">About </Link>
+            <Link to="/tools/filterFriends">Filter Friends</Link>
           </Menu.Item>
           <Menu.Item key="4">
             <Link to="/tools/filterFriends">About 1 </Link>

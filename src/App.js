@@ -2,7 +2,7 @@ import React from "react";
 import "./index.css";
 import NavBar from "./components/Navbar/index";
 import Dashboard from "./components/Dashboard/index";
-import FilterFriends from "./components/Tools/FilterFriends/index"
+import FilterFriends from "./components/Tools/FilterFriends/index";
 
 import { Layout } from "antd";
 import { Route, Switch } from "react-router-dom";
@@ -14,7 +14,6 @@ function App() {
     <Layout style={{ minHeight: "100vh" }}>
       <NavBar />
       <Layout className="site-layout">
-        
         <Content style={{ margin: "0 16px" }}>
           <div
             className="site-layout-background"
@@ -29,7 +28,7 @@ function App() {
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          SIC Extension beta
+          Facebook Extensions Tools
         </Footer>
       </Layout>
     </Layout>
