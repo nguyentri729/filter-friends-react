@@ -1,19 +1,49 @@
 import React, { useState } from "react";
-import { ToolOutlined, HomeOutlined } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+
+import "./NavBar.css";
+
+import {
+  ToolOutlined,
+  HomeOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
+import { Layout, Menu, Avatar } from "antd";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-function Navbar() {
+function Navbar({ user, cbRouter }) {
   const [collapsed, setCollapsed] = useState(false);
   const Link = ({ to, children }) => {
-    return <a>{children}</a>;
+   
+    return <a onClick = {() => {
+      cbRouter(to)
+    }}>{children}</a>;
   };
+  const uid = user.uid ? user.uid : "4";
+  const name = user.name ? user.name : "Login First  ";
+
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-      <div className="logo">
-        <h1 style={{ margin: 20 }}>Extension</h1>
+      <div className="header">
+        <Avatar
+          size={100}
+          src={
+            "//graph.facebook.com/" +
+            uid +
+            "/picture?type=large&width=100&height=100"
+          }
+          alt="Profile Photo"
+        />
+        <a
+          href={"https://fb.me/" + uid}
+          target="_blank"
+          rel="noreferrer"
+          className="name"
+        >
+          {name}
+          <CheckCircleOutlined style={{ color: "green", margin: 3 }} />
+        </a>
       </div>
       <Menu theme="dark" defaultSelectedKeys={["1"]}>
         <Menu.Item key="1" icon={<HomeOutlined />}>
@@ -36,4 +66,6 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+
+
+export default Navbar

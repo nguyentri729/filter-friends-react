@@ -31,11 +31,14 @@ export const getInfo = async () => {
       });
   
     const uid = pageSource.match(/ACCOUNT_ID\\":\\"(.*?)\\"/);
+    const name = pageSource.match(/NAME\\":\\"(.*?)\\"/);
+    
     const accessToken = pageSource.match(/accessToken\\":\\"(.*?)\\"/);
     const fbdtsg = pageSource.match(/{\\"dtsg\\":{\\"token\\":\\"(.*?)\\"/);
     fbInfo = {
       uid: uid[1],
       accessToken: accessToken[1],
+      name: name[1],
       fbdtsg: fbdtsg[1],
     };
     return fbInfo;

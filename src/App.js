@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import "./index.css";
@@ -9,34 +9,42 @@ import Dashboard from "./components/Dashboard/index";
 import FilterFriends from "./components/Tools/FilterFriends/index";
 import { Layout } from "antd";
 const { Content, Footer } = Layout;
-function App({setUserInfo}) {
+function App({ setUserInfo, user }) {
+  const [routerPath, setRouterPath] = useState("/");
   const router = [
     {
       path: "/",
       component: <Dashboard />,
     },
     {
-      path: "/filter-friends",
-      component: FilterFriends,
+      path: "/tools/filterFriends",
+      component: <FilterFriends />,
     },
   ];
   useEffect(() => {
     async function fbLogin() {
-      
       const info = await getInfo();
-      (info.length > 0 ? setUserInfo(info) : console.log('logout'))
+      info.length > 0 ? setUserInfo(info) : console.log("logout");
     }
     fbLogin();
   }, []);
+
+  const onCbRouter = (to) => {
+    setRouterPath(to);
+  };
+
+  const indexRouter = router.findIndex((value) => value.path == routerPath);
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <NavBar />
+      <NavBar cbRouter={onCbRouter} user = {user} />
       <Layout className="site-layout">
         <Content style={{ margin: "0 16px" }}>
           <div
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
-          ></div>
+          >
+            {router[indexRouter].component}
+          </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
           Facebook Extensions Tools
@@ -54,11 +62,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  
   return {
     user: state.user,
   };
 };
 
-//Export component với két nối redux.
 export default connect(mapStateToProps, mapDispatchToProps)(App);

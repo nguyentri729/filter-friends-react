@@ -1,0 +1,12 @@
+.header {
+   text-align: center;
+   margin: 20px
+}
+
+.header .name {
+   font-size: 30;
+   color: white;
+   font-weight: bold;
+   display: block;
+   margin-top: 10px
+ }
