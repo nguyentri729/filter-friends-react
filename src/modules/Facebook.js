@@ -21,23 +21,29 @@ var fbInfo = [];
 var friendsList = [];
 
 export const getInfo = async () => {
-  const pageSource = await fetch(
-    "https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed"
-  )
-    .then((e) => e.text())
-    .then((e) => {
-      return e;
-    });
-
-  const uid = pageSource.match(/ACCOUNT_ID\\":\\"(.*?)\\"/);
-  const accessToken = pageSource.match(/accessToken\\":\\"(.*?)\\"/);
-  const fbdtsg = pageSource.match(/{\\"dtsg\\":{\\"token\\":\\"(.*?)\\"/);
-  fbInfo = {
-    uid: uid[1],
-    accessToken: accessToken[1],
-    fbdtsg: fbdtsg[1],
-  };
-  return fbInfo;
+  try {
+    const pageSource = await fetch(
+      "https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed"
+    )
+      .then((e) => e.text())
+      .then((e) => {
+        return e;
+      });
+  
+    const uid = pageSource.match(/ACCOUNT_ID\\":\\"(.*?)\\"/);
+    const accessToken = pageSource.match(/accessToken\\":\\"(.*?)\\"/);
+    const fbdtsg = pageSource.match(/{\\"dtsg\\":{\\"token\\":\\"(.*?)\\"/);
+    fbInfo = {
+      uid: uid[1],
+      accessToken: accessToken[1],
+      fbdtsg: fbdtsg[1],
+    };
+    return fbInfo;
+  } catch (error) {
+    console.log(error)
+  }
+  return []
+  
 };
 const getFriendsList = async () => {
   let getFriendAPI = `https://graph.facebook.com/v3.0/me/friends?fields=gender,name&limit=50&access_token=${fbInfo.accessToken}`;

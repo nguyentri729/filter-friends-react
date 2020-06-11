@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
-import "./index.css";
-import {getInfo} from "./modules/Facebook"
+import { connect } from "react-redux";
 
+import "./index.css";
+import { getInfo } from "./modules/Facebook";
+import { actSetUserInfo } from "./redux/actions/User.action";
 import NavBar from "./components/Navbar/index";
 import Dashboard from "./components/Dashboard/index";
 import FilterFriends from "./components/Tools/FilterFriends/index";
 import { Layout } from "antd";
 const { Content, Footer } = Layout;
-function App() {
+function App({setUserInfo}) {
   const router = [
     {
       path: "/",
@@ -20,11 +22,12 @@ function App() {
   ];
   useEffect(() => {
     async function fbLogin() {
-      const info = await getInfo()
-      console.log(info);
+      
+      const info = await getInfo();
+      (info.length > 0 ? setUserInfo(info) : console.log('logout'))
     }
-    fbLogin()
-  }, [])
+    fbLogin();
+  }, []);
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <NavBar />
@@ -42,5 +45,20 @@ function App() {
     </Layout>
   );
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserInfo: (info) => {
+      dispatch(actSetUserInfo(info));
+    },
+  };
+};
 
-export default App;
+const mapStateToProps = (state, ownProps) => {
+  
+  return {
+    user: state.user,
+  };
+};
+
+//Export component với két nối redux.
+export default connect(mapStateToProps, mapDispatchToProps)(App);
