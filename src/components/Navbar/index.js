@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { ToolOutlined, HomeOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { Link } from "react-router-dom";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
+
 function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
-
+  const Link = ({ to, children }) => {
+    return <a>{children}</a>;
+  };
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
       <div className="logo">
-       <h1 style={{margin: 20}}>Extension</h1>
+        <h1 style={{ margin: 20 }}>Extension</h1>
       </div>
       <Menu theme="dark" defaultSelectedKeys={["1"]}>
         <Menu.Item key="1" icon={<HomeOutlined />}>
@@ -26,7 +28,7 @@ function Navbar() {
             <Link to="/tools/filterFriends">About 1 </Link>
           </Menu.Item>
           <Menu.Item key="35">
-            <Link to="/tools/filterFriends">About  2</Link>
+            <Link to="/tools/filterFriends">About 2</Link>
           </Menu.Item>
         </SubMenu>
       </Menu>

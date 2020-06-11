@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "antd";
+import { Card, Button} from "antd";
 import { FilterOutlined, LoadingOutlined } from "@ant-design/icons";
 import filterData from '../../../data.json';
 import FilterTable from "./FilterTable"
@@ -24,6 +24,11 @@ function FilterFriends() {
         }
         loading = {isLoading}
       >
+        <Button onClick = {() => {
+          setData(data.filter((item) => {
+            return item.id !== '100008969687961';
+          }))
+        }}>Delete</Button>
        <FilterTable data = {data}/>
       </Card>
     </div>

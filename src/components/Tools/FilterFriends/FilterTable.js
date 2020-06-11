@@ -1,22 +1,19 @@
 import React, { useState } from "react";
-import { Table, Divider, Button } from "antd";
+import { Table, Divider, Button, notification } from "antd";
 import { getInteractCount } from "../../../helper/index";
 import { DeleteOutlined } from "@ant-design/icons";
 
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record) => ({
-    disabled: record.name === "Disabled User",
-    name: record.name,
-  }),
-};
 const FilterTable = ({ data }) => {
+  const [selected, setSelected] = useState([]);
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelected(selectedRows);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === "Disabled User",
+      name: record.name,
+    }),
+  };
   const columns = [
     {
       title: "UID",
@@ -42,8 +39,12 @@ const FilterTable = ({ data }) => {
               style={{ margin: 5 }}
             />
 
-            <a href={"https://facebook.com/" + total.id + ""} target="_blank" rel="noopener noreferrer">
-            <b>{name}</b>
+            <a
+              href={"https://facebook.com/" + total.id + ""}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <b>{name}</b>
             </a>
           </>
         );
@@ -90,10 +91,25 @@ const FilterTable = ({ data }) => {
       },
     },
   ];
+  const openNotificationWithIcon = (type = 'success', name = 'Mark') => {
+    
+    notification[type]({
+    message: <span>Đã xóa <b>{name} !</b></span>,
+      
+    });
+  };
+  notification.config({
+    duration: 1,
+  });
 
   return (
     <div>
-      <Button type="primary" icon={<DeleteOutlined />} danger>
+      <Button
+        type="primary"
+        icon={<DeleteOutlined />}
+        danger
+        onClick={() => openNotificationWithIcon("success")}
+      >
         Remove
       </Button>
       <Divider />
