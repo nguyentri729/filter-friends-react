@@ -20,7 +20,7 @@ function Navbar({ user, cbRouter }) {
       cbRouter(to)
     }}>{children}</a>;
   };
-  const uid = user.uid ? user.uid : "4";
+  const uid = user.uid ? user.uid.toString() : "4";
   const name = user.name ? user.name : "Login First  ";
 
   return (
@@ -29,9 +29,7 @@ function Navbar({ user, cbRouter }) {
         <Avatar
           size={100}
           src={
-            "//graph.facebook.com/" +
-            uid +
-            "/picture?type=large&width=100&height=100"
+            "https://graph.facebook.com/" +uid +"/picture?type=large&width=100&height=100"
           }
           alt="Profile Photo"
         />
@@ -41,7 +39,7 @@ function Navbar({ user, cbRouter }) {
           rel="noreferrer"
           className="name"
         >
-          {name}
+          {unescape(name)}
           <CheckCircleOutlined style={{ color: "green", margin: 3 }} />
         </a>
       </div>

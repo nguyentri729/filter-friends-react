@@ -21,10 +21,13 @@ function App({ setUserInfo, user }) {
       component: <FilterFriends />,
     },
   ];
+
+
   useEffect(() => {
     async function fbLogin() {
       const info = await getInfo();
-      info.length > 0 ? setUserInfo(info) : console.log("logout");
+      
+      info.name && info.uid ? setUserInfo(info) : console.log("logout");
     }
     fbLogin();
   }, []);

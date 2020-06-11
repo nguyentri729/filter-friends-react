@@ -17,8 +17,8 @@ const binarySearch = (arr, value) => {
   return -1;
 };
 
-var fbInfo = [];
-var friendsList = [];
+export var fbInfo = [];
+export var friendsList = [];
 
 export const getInfo = async () => {
   try {
@@ -29,26 +29,26 @@ export const getInfo = async () => {
       .then((e) => {
         return e;
       });
-  
+
     const uid = pageSource.match(/ACCOUNT_ID\\":\\"(.*?)\\"/);
     const name = pageSource.match(/NAME\\":\\"(.*?)\\"/);
-    
+
     const accessToken = pageSource.match(/accessToken\\":\\"(.*?)\\"/);
     const fbdtsg = pageSource.match(/{\\"dtsg\\":{\\"token\\":\\"(.*?)\\"/);
-    fbInfo = {
+    var fbInfo = {
       uid: uid[1],
       accessToken: accessToken[1],
       name: name[1],
       fbdtsg: fbdtsg[1],
     };
+
     return fbInfo;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-  return []
-  
+  return [];
 };
-const getFriendsList = async () => {
+export const getFriendsList = async (fbInfo = []) => {
   let getFriendAPI = `https://graph.facebook.com/v3.0/me/friends?fields=gender,name&limit=50&access_token=${fbInfo.accessToken}`;
 
   while (true) {
@@ -61,9 +61,7 @@ const getFriendsList = async () => {
       .catch((err) => {
         return null;
       });
-    friendsList = data.data
-      ? [...friendsList, ...data.data]
-      : friendsList;
+    friendsList = data.data ? [...friendsList, ...data.data] : friendsList;
 
     if (data.paging.next) {
       getFriendAPI = data.paging.next;
@@ -73,7 +71,7 @@ const getFriendsList = async () => {
   }
 };
 
-const fetchReactions = async (nextPage = "") => {
+const fetchReactions = async (nextPage = "", fbInfo = []) => {
   var a = new FormData();
   a.append("fb_dtsg", fbInfo.fbdtsg);
   a.append(
@@ -100,13 +98,13 @@ const fetchReactions = async (nextPage = "") => {
 
   return data[fbInfo.uid]["timeline_feed_units"];
 };
-const scanReactions = async () => {
-  let data = await fetchReactions();
+export const scanReactions = async (fbInfo = []) => {
+  let data = await fetchReactions("", fbInfo);
   parseInteractPeople(data.edges);
   //data return
 
   while (data.page_info.has_next_page) {
-    data = await fetchReactions(data.page_info.end_cursor);
+    data = await fetchReactions(data.page_info.end_cursor, fbInfo);
     parseInteractPeople(data.edges);
   }
 };
@@ -151,7 +149,29 @@ const parseInteractPeople = (interactData = []) => {
     }
   }
 };
+export const removeFriend = async (uid = 4, fbInfo = []) => {
+  var a = new FormData();
+  a.append("fb_dtsg", fbInfo.fbdtsg);
+  a.append("uid", uid);
+  a.append("__user", fbInfo.uid);
+  a.append("__a", 1);
+  a.append("unref", "bd_friends_tab");
 
-const showFriendsList = () => {
-  return friendsList;
+  const data = await fetch(
+    "https://www.facebook.com/ajax/profile/removefriendconfirm.php",
+    {
+      method: "POST",
+      credentials: "include",
+      body: a,
+    }
+  )
+    .catch(function () {
+      return null;
+    })
+    .then((e) => e.text())
+    .then((res) => {
+      return res;
+    });
+  
+  return /ACCOUNT_ID/.test(data)
 };
