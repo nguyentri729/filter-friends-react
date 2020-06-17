@@ -1,38 +1,26 @@
-# React Chrome Extension
-We have open sourced the boilerplate of chrome extension with ReactJs using inject page strategy. Read [detailed blog](https://medium.com/@satendra02/create-chrome-extension-with-reactjs-using-inject-page-strategy-137650de1f39)
-
-
-The boilerplate is to quickly create a chrome extension using ReactJs, The motivation behind creating a boilerplate was:
-1. Instead of chrome's ready-made popup, We wanted our own page injected into DOM as a sidebar for better UX.
-
-2. We wanted to use ReactJs for the Component-based approach, Routing, and its build mechanism.
-
-3. We need to make sure that the extension CSS should not conflict with the host page styles in any case.
-
-
+# Facebook Filter Friends Extensions
+ - Build with React.js and Chrome's API. 
 ## Features
 
-- Used ReactJs to write chrome extension
-- Injecting extension to host page as content script
-- Utilized the Chrome messaging API
-- Isolated extension CSS using Iframe
-
+ - Filter Friends Faccebook with one clicks. 
+ - Scan reactions and comments on Facebook posts.
+ - and more features...
 ## Installation
 >Make sure you have latest **NodeJs** version installed
 
 Clone repo
 
 ```
-git clone https://github.com/satendra02/react-chrome-extension.git
+git clone https://github.com/nguyentri729/filter-friends-react.git
 ```
-Go to `react-chrome-extension` directory run
+Go to `filter-friends-react` directory run
 
 ```
-yarn install
+npm install
 ```
 Now build the extension using
 ```
-yarn build
+npm build
 ```
 You will see a `build` folder generated inside `[PROJECT_HOME]`
 
@@ -50,7 +38,7 @@ When you go to any website and click on extension icon, injected page will toggl
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/satendra02/react-chrome-extension/. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/nguyentri729/filter-friends-react/. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License

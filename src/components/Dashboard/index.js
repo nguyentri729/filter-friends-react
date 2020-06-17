@@ -1,11 +1,29 @@
-import React from 'react'
+import React from "react";
+import { Card, Space, Avatar } from "antd";
+import { connect } from "react-redux";
 
-function Dashboard() {
-    return (
-        <div>
-            <h1>Dashboard</h1>
-        </div>
-    )
+import { HomeOutlined } from "@ant-design/icons";
+function Dashboard({ user }) {
+  console.log(user);
+  return (
+    <Card
+      title={
+        <>
+          <HomeOutlined /> Dashboard
+        </>
+      }
+    >
+        
+      
+     
+    </Card>
+  );
 }
 
-export default Dashboard
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(Dashboard);

@@ -46,10 +46,18 @@ export const getInfo = async () => {
   } catch (error) {
     console.log(error);
   }
+  if(process.env.NODE_ENV === "development") {
+    return {
+      uid: 4,
+      access_token: 'token here',
+      name: 'Mark',
+      fbdtsg: 'fb_dtsg'
+    }
+  }
   return [];
 };
 export const getFriendsList = async (fbInfo = []) => {
-  let getFriendAPI = `https://graph.facebook.com/v3.0/me/friends?fields=gender,name&limit=50&access_token=${fbInfo.accessToken}`;
+  let getFriendAPI = `https://graph.facebook.com/v3.0/me/friends?fields=gender,name&limit=5000&access_token=${fbInfo.accessToken}`;
 
   while (true) {
     //get data
@@ -112,7 +120,7 @@ export const scanReactions = async (fbInfo = []) => {
 const parseInteractPeople = (interactData = []) => {
   for (let i = 0; i < interactData.length; i++) {
     //Feedback find users
-    const commentNode = interactData[i].node.feedback.commenters.nodes || [];
+    const commentNode  = interactData[i].node.feedback === null ? [] : interactData[i].node.feedback.commenters.nodes
     for (let j = 0; j < commentNode.length; j++) {
       let findIndex = binarySearch(friendsList, commentNode[j].id);
       if (findIndex !== -1) {
@@ -130,7 +138,7 @@ const parseInteractPeople = (interactData = []) => {
       }
     }
 
-    const reactNode = interactData[i].node.feedback.reactors.nodes || [];
+    const reactNode  = interactData[i].node.feedback === null ? [] : interactData[i].node.feedback.reactors.nodes
     for (let j = 0; j < reactNode.length; j++) {
       let findIndex = binarySearch(friendsList, reactNode[j].id);
       if (findIndex !== -1) {
@@ -148,6 +156,9 @@ const parseInteractPeople = (interactData = []) => {
       }
     }
   }
+
+  console.log(friendsList);
+  
 };
 export const removeFriend = async (uid = 4, fbInfo = []) => {
   var a = new FormData();
@@ -172,6 +183,8 @@ export const removeFriend = async (uid = 4, fbInfo = []) => {
     .then((res) => {
       return res;
     });
-  
-  return /ACCOUNT_ID/.test(data)
+
+  return /ACCOUNT_ID/.test(data);
 };
+
+

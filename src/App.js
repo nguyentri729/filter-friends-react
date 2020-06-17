@@ -21,25 +21,34 @@ function App({ setUserInfo, user }) {
       component: <FilterFriends />,
     },
   ];
-
-
+  const openFacebookLogin = () => {
+    console.log("require login productsion");
+  };
   useEffect(() => {
     async function fbLogin() {
       const info = await getInfo();
-      
-      info.name && info.uid ? setUserInfo(info) : console.log("logout");
+
+      //info.name && info.uid ? setUserInfo(info) : ;
+
+      if (info.name && info.uid) {
+        setUserInfo(info);
+      } else {
+        process.env.NODE_ENV === "production"
+          ? openFacebookLogin()
+          : console.log("require login");
+      }
     }
     fbLogin();
-  }, []);
+  }, [setUserInfo]);
 
   const onCbRouter = (to) => {
     setRouterPath(to);
   };
 
-  const indexRouter = router.findIndex((value) => value.path == routerPath);
+  const indexRouter = router.findIndex((value) => value.path === routerPath);
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <NavBar cbRouter={onCbRouter} user = {user} />
+      <NavBar cbRouter={onCbRouter} user={user} />
       <Layout className="site-layout">
         <Content style={{ margin: "0 16px" }}>
           <div
