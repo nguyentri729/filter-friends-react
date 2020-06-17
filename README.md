@@ -2,7 +2,7 @@
  - Build with React.js and Chrome's API. 
 ## Features
 
- - Filter Friends Faccebook with one clicks. 
+ - Filter Friends Faccebook with one click. 
  - Scan reactions and comments on Facebook posts.
  - and more features...
 ## Installation
