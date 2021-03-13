@@ -1,70 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-
-import "./index.css";
-import { getInfo } from "./modules/Facebook";
 import { actSetUserInfo } from "./redux/actions/User.action";
-import NavBar from "./components/Navbar/index";
-import Dashboard from "./components/Dashboard/index";
-import FilterFriends from "./components/Tools/FilterFriends/index";
-import { Layout } from "antd";
-const { Content, Footer } = Layout;
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import profile from "./modules/profile"
+import routers from "./constants/routers";
+import "./index.css";
 function App({ setUserInfo, user }) {
-  const [routerPath, setRouterPath] = useState("/");
-  const router = [
-    {
-      path: "/",
-      component: <Dashboard />,
-    },
-    {
-      path: "/tools/filterFriends",
-      component: <FilterFriends />,
-    },
-  ];
-  const openFacebookLogin = () => {
-    console.log("require login productsion");
-  };
   useEffect(() => {
-    async function fbLogin() {
-      const info = await getInfo();
-
-      //info.name && info.uid ? setUserInfo(info) : ;
-
-      if (info.name && info.uid) {
-        setUserInfo(info);
-      } else {
-        process.env.NODE_ENV === "production"
-          ? openFacebookLogin()
-          : console.log("require login");
-      }
-    }
-    fbLogin();
-  }, [setUserInfo]);
-
-  const onCbRouter = (to) => {
-    setRouterPath(to);
-  };
-
-  const indexRouter = router.findIndex((value) => value.path === routerPath);
+    profile.getUserInfo().then(res => {
+      const {accessToken} = res;
+      localStorage.setItem("accessToken", accessToken);
+    });
+  }, [])
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <NavBar cbRouter={onCbRouter} user={user} />
-      <Layout className="site-layout">
-        <Content style={{ margin: "0 16px" }}>
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
-          >
-            {router[indexRouter].component}
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Facebook Extensions Tools
-        </Footer>
-      </Layout>
-    </Layout>
+    <div>
+      <Router>
+        <Switch>
+          {routers.map((router) => {
+            return (
+              <Route path={router.path} component={router.component}></Route>
+            );
+          })}
+        </Switch>
+      </Router>
+    </div>
   );
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setUserInfo: (info) => {
