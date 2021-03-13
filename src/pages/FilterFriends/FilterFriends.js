@@ -42,14 +42,14 @@ function FilterFriends() {
     setLoading(false);
   }
 
-  async function scanInteractionFriend() {
+  async function scanInteractionFriends() {
     setScaning(true);
     let cursorNextPage = "";
     while (true) {
-      const interactionFriends = await profile.getInteractionPost(
+      const postsInteractions = await profile.getAllPostsInteractions(
         cursorNextPage
       );
-      const edges = _.get(interactionFriends, "timeline_feed_units.edges", []);
+      const edges = _.get(postsInteractions, "timeline_feed_units.edges", []);
       for (const edge of edges) {
         const node = edge.node;
         const { commenters, reactors } = node.feedback;
@@ -57,7 +57,7 @@ function FilterFriends() {
         caculateInteractionCount(reactors.nodes, "reaction");
       }
       const pageInfo = _.get(
-        interactionFriends,
+        postsInteractions,
         "timeline_feed_units.page_info"
       );
       if (!pageInfo.has_next_page) break;
@@ -95,7 +95,7 @@ function FilterFriends() {
         <>
           <center>
             <Button
-              onClick={scanInteractionFriend}
+              onClick={scanInteractionFriends}
               loading={isScaning}
               style={{ margin: "0 auto" }}
             >

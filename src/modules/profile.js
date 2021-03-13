@@ -65,7 +65,7 @@ async function getFriends() {
   return friends;
 }
 
-async function getInteractionPost(cursorPage = "") {
+async function getAllPostsInteractions(cursorPage = "") {
   const query = `node(${userInfos.uid}){timeline_feed_units.first(250).after(${cursorPage}){page_info,edges{node{id,creation_time,feedback{reactors{nodes{id}},commenters{nodes{id}}}}}}}`;
   return graphQL(query);
 }
@@ -101,6 +101,6 @@ async function removeFriend(friendId = 4) {
 export default {
   getFriends,
   getUserInfo,
-  getInteractionPost,
+  getAllPostsInteractions,
   removeFriend,
 };
